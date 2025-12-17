@@ -3,8 +3,8 @@
 
 Summary:	File sharing client compatible with eDonkey
 Name:		amule
-Version:	2.4.0
-Release:	git.20250117.1
+Version:	2.4.0+git20250117
+Release:	1
 License:	GPLv2+
 Group:		Networking/File transfer
 Url:		https://amule.org
@@ -17,12 +17,17 @@ Source11:	%{name}-32.png
 Source12:	%{name}-48.png
 #Patch1:		125.patch
 #Patch2:		amule-2.3.2-c++11.patch
+Patch0:		https://github.com/amule-project/amule/pull/361/commits/ec3fb4e5479c70d88b5bf9923b0b89bf5b8dec04.patch#/update-boost-m4.patch
+# Patch1 adds a missing include that was breaking build on boost 1.89+
+Patch1:		amule-master-boost-fixes.patch
 
 BuildRequires:	bison
-BuildRequires:  cmake
+BuildRequires:	cmake
+BuildRequires:	make
+BuildRequires:	ninja
 BuildRequires:	flex
 BuildRequires:	desktop-file-utils
-#BuildRequires:	boost-devel
+BuildRequires:	boost-devel
 BuildRequires:	binutils-devel
 BuildRequires:	gd-devel >= 2.0
 BuildRequires:	gettext-devel
@@ -140,22 +145,23 @@ sed -i 's|unset (\${CMAKE_REQUIRED_LIBRARIES})|#unset (\${CMAKE_REQUIRED_LIBRARI
 
 %build
 %cmake \
-        	-DENABLE_BOOST=ON      \
-	        -DBUILD_AMULECMD=ON    \
-	        -DBUILD_REMOTEGUI=ON   \
-	        -DBUILD_WEBSERVER=ON   \
-	        -DBUILD_CAS=ON         \
-	        -DBUILD_WXCAS=ON       \
-	        -DBUILD_ALC=ON         \
-	        -DBUILD_ALCC=ON        \
-	        -DBUILD_DAEMON=ON      \
-	        -DENABLE_IP2COUNTRY=ON \
-	        -DBUILD_FILEVIEW=ON    \
-	        -DBUILD_XAS=ON         
-%make_build
+	-DENABLE_BOOST=ON      \
+	-DBUILD_AMULECMD=ON    \
+	-DBUILD_REMOTEGUI=ON   \
+	-DBUILD_WEBSERVER=ON   \
+	-DBUILD_CAS=ON         \
+	-DBUILD_WXCAS=ON       \
+	-DBUILD_ALC=ON         \
+	-DBUILD_ALCC=ON        \
+	-DBUILD_DAEMON=ON      \
+	-DENABLE_IP2COUNTRY=ON \
+	-DBUILD_FILEVIEW=ON    \
+	-DBUILD_XAS=ON         \
+	-G Ninja
+%ninja_build
 
 %install
-%make_install -C build
+%ninja_install -C build
 install -m 644 -D %{SOURCE10} %{buildroot}%{_miconsdir}/%{name}.png
 install -m 644 -D %{SOURCE11} %{buildroot}%{_iconsdir}/%{name}.png
 install -m 644 -D %{SOURCE12} %{buildroot}%{_liconsdir}/%{name}.png
