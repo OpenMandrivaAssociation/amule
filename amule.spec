@@ -4,7 +4,7 @@
 Summary:	File sharing client compatible with eDonkey
 Name:		amule
 Version:	2.4.0
-Release:	git.20250117.1
+Release:	git.20250117.2
 License:	GPLv2+
 Group:		Networking/File transfer
 Url:		https://amule.org
