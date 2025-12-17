@@ -4,7 +4,7 @@
 Summary:	File sharing client compatible with eDonkey
 Name:		amule
 Version:	2.4.0
-Release:	git.20250117.2
+Release:	git.20250117.1
 License:	GPLv2+
 Group:		Networking/File transfer
 Url:		https://amule.org
@@ -86,7 +86,7 @@ update-alternatives --remove ed2k %{_bindir}/ed2k-%{name}
 %package commandline
 Summary:	File sharing client compatible with eDonkey
 Group:		Networking/File transfer
-Requires:	amule = %name-%version~git.%{commit_date}
+Requires:	amule = %name-%version
 
 %description commandline
 aMule is an easy to use multi-platform client for ED2K Peer-to-Peer
