@@ -86,7 +86,7 @@ update-alternatives --remove ed2k %{_bindir}/ed2k-%{name}
 %package commandline
 Summary:	File sharing client compatible with eDonkey
 Group:		Networking/File transfer
-Requires:	amule = %name-%version
+Requires:	amule = %{version}-%{release}
 
 %description commandline
 aMule is an easy to use multi-platform client for ED2K Peer-to-Peer
