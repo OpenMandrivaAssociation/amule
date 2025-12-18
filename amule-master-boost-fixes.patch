@@ -1,0 +1,11 @@
+diff -urN amule-master/src/LibSocketAsio.cpp amule-master-boost-fixes/src/LibSocketAsio.cpp
+--- amule-master/src/LibSocketAsio.cpp	2025-01-17 14:00:47.000000000 +0000
++++ amule-master-boost-fixes/src/LibSocketAsio.cpp	2025-12-17 22:37:20.573663125 +0000
+@@ -43,6 +43,7 @@
+ #include <algorithm>	// Needed for std::min - Boost up to 1.54 fails to compile with MSVC 2013 otherwise
+ 
+ #include <boost/asio.hpp>
++#include <boost/asio/deadline_timer.hpp>
+ #include <boost/bind.hpp>
+ #include <boost/version.hpp>
+ 
