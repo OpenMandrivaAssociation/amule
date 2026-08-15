@@ -32,6 +32,7 @@ BuildRequires:	pkgconfig(cryptopp)
 BuildRequires:	pkgconfig(geoip)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libupnp)
+BuildRequires:	pkgconfig(libmaxminddb)
 BuildRequires:	pkgconfig(ncurses)
 
 %description
