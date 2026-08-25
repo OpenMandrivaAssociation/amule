@@ -90,7 +90,6 @@ following platforms: Linux, *BSD and MacOS X.
 This is the command line tool to control aMule remotely (or locally:).
 
 %files commandline -f commandline.lang
-%doc docs/README
 %{_bindir}/%{name}cmd
 %{_bindir}/alcc
 %{_bindir}/amuled
