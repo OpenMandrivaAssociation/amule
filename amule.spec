@@ -113,7 +113,6 @@ following platforms: Linux, *BSD and MacOS X.
 This is the webserver to control aMule remotely (or locally:).
 
 %files webserver -f %{name}web.lang
-%doc docs/README
 %{_bindir}/%{name}web
 %{_datadir}/amule/webserver/*
 %{_mandir}/man1/amuleweb.1*
