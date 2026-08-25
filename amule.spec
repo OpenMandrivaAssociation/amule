@@ -3,23 +3,18 @@
 
 Summary:	File sharing client compatible with eDonkey
 Name:		amule
-Version:	2.4.0+git20250117
+Version:	3.0.0
 Release:	1
 License:	GPLv2+
 Group:		Networking/File transfer
 Url:		https://amule.org
-#Source0:	https://sourceforge.net/projects/amule/files/aMule/%{version}/%{oname}-%{version}.tar.gz
+Source0:	https://github.com/amule-project/amule/archive/%{version}/%{name}-%{version}.tar.gz
 # Use latest git, last release was done years ago and is broken and terrible to compile.
 # Git from 2023-11-16, commit: e26d06a6eeaf37c716a88a47890cb85b931a0538
-Source0:	https://github.com/amule-project/amule/archive/refs/heads/amule-master.tar.gz
+#Source0:	https://github.com/amule-project/amule/archive/refs/heads/amule-master.tar.gz
 Source10:	%{name}-16.png
 Source11:	%{name}-32.png
 Source12:	%{name}-48.png
-#Patch1:		125.patch
-#Patch2:		amule-2.3.2-c++11.patch
-Patch0:		https://github.com/amule-project/amule/pull/361/commits/ec3fb4e5479c70d88b5bf9923b0b89bf5b8dec04.patch#/update-boost-m4.patch
-# Patch1 adds a missing include that was breaking build on boost 1.89+
-Patch1:		amule-master-boost-fixes.patch
 
 BuildRequires:	bison
 BuildRequires:	cmake
@@ -32,12 +27,12 @@ BuildRequires:	binutils-devel
 BuildRequires:	gd-devel >= 2.0
 BuildRequires:	gettext-devel
 BuildRequires:	readline-devel
-# At some point we can switch to new wxgtk 3.1.X/3.2
 BuildRequires:	wxgtk-devel
 BuildRequires:	pkgconfig(cryptopp)
 BuildRequires:	pkgconfig(geoip)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libupnp)
+BuildRequires:	pkgconfig(libmaxminddb)
 BuildRequires:	pkgconfig(ncurses)
 
 %description
@@ -48,6 +43,9 @@ following platforms: Linux, *BSD and MacOS X.
 
 %files -f %{name}.lang
 %doc docs/*
+%license %{_datadir}/LICENSE.md
+%{_datadir}/applications/org.amule.aMule.desktop
+%{_datadir}/applications/org.amule.aMule.gui.desktop
 %{_datadir}/applications/alc.desktop
 %{_datadir}/applications/wxcas.desktop
 %{_datadir}/pixmaps/alc.xpm
@@ -58,16 +56,14 @@ following platforms: Linux, *BSD and MacOS X.
 %{_bindir}/cas
 %{_bindir}/ed2k-amule
 %{_bindir}/alc
-%{_bindir}/autostart-xas
 %{_bindir}/fileview
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/skins
-%{_datadir}/applications/amule.desktop
-%{_datadir}/applications/amulegui.desktop
-%{_datadir}/pixmaps/amule.xpm
-%{_datadir}/pixmaps/amulegui.xpm
 %{_datadir}/cas
+%{_datadir}/metainfo/org.amule.aMule.metainfo.xml
+%{_datadir}/pixmaps/org.amule.aMule.png
 %{_miconsdir}/%{name}.png
+%{_iconsdir}/hicolor/*x*/apps/org.amule.aMule.png
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 %{_mandir}/man1/alc.1*
@@ -77,8 +73,6 @@ following platforms: Linux, *BSD and MacOS X.
 %{_mandir}/man1/ed2k.1*
 %{_mandir}/man1/wxcas.1*
 %{_mandir}/*/man1/amuled.1.*
-%{_mandir}/*/man1/xas.1.*
-%{_mandir}/man1/xas.1.*
 
 %post
 update-alternatives --install %{_bindir}/ed2k ed2k %{_bindir}/ed2k-%{name} 5
@@ -102,7 +96,6 @@ following platforms: Linux, *BSD and MacOS X.
 This is the command line tool to control aMule remotely (or locally:).
 
 %files commandline -f commandline.lang
-%doc docs/README
 %{_bindir}/%{name}cmd
 %{_bindir}/alcc
 %{_bindir}/amuled
@@ -126,7 +119,6 @@ following platforms: Linux, *BSD and MacOS X.
 This is the webserver to control aMule remotely (or locally:).
 
 %files webserver -f %{name}web.lang
-%doc docs/README
 %{_bindir}/%{name}web
 %{_datadir}/amule/webserver/*
 %{_mandir}/man1/amuleweb.1*
@@ -134,10 +126,10 @@ This is the webserver to control aMule remotely (or locally:).
 #----------------------------------------------------------------------------
 
 %prep
-%autosetup -p1 -n %{name}-master
+%autosetup -p1 -n %{name}-%{version}
 
 # fix SVN version tag name
-sed -i -e 's|VERSION "GIT"|VERSION "%{version} GIT"|' CMakeLists.txt
+#sed -i -e 's|VERSION "GIT"|VERSION "%{version} GIT"|' CMakeLists.txt
 
 sed -i 's|unset (\${CMAKE_REQUIRED_LIBRARIES})|#unset (\${CMAKE_REQUIRED_LIBRARIES})|' cmake/bfd.cmake
 
