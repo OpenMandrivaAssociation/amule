@@ -43,6 +43,9 @@ following platforms: Linux, *BSD and MacOS X.
 
 %files -f %{name}.lang
 %doc docs/*
+%license %{_datadir}/LICENSE.md
+%{_datadir}/applications/org.amule.aMule.desktop
+%{_datadir}/applications/org.amule.aMule.gui.desktop
 %{_datadir}/applications/alc.desktop
 %{_datadir}/applications/wxcas.desktop
 %{_datadir}/pixmaps/alc.xpm
@@ -57,7 +60,10 @@ following platforms: Linux, *BSD and MacOS X.
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/skins
 %{_datadir}/cas
+%{_datadir}/metainfo/org.amule.aMule.metainfo.xml
+%{_datadir}/pixmaps/org.amule.aMule.png
 %{_miconsdir}/%{name}.png
+%{_iconsdir}/hicolor/*x*/apps/org.amule.aMule.png
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 %{_mandir}/man1/alc.1*
