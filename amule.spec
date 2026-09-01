@@ -43,6 +43,7 @@ following platforms: Linux, *BSD and MacOS X.
 
 %files -f %{name}.lang
 %doc docs/*
+%doc %{_datadir}/doc/amule/LICENSE.md
 %{_datadir}/applications/org.amule.aMule.desktop
 %{_datadir}/applications/org.amule.aMule.gui.desktop
 %{_datadir}/applications/alc.desktop
