@@ -119,7 +119,8 @@ following platforms: Linux, *BSD and MacOS X.
 
 This is the webserver to control aMule remotely (or locally:).
 
-%files webserver -f %{name}web.lang
+%files webserver 
+#-f %{name}web.lang
 %{_bindir}/%{name}web
 %{_datadir}/amule/webserver/*
 %{_mandir}/man1/amuleweb.1*
@@ -171,4 +172,4 @@ desktop-file-install --vendor="" \
 # find_lang macro is different since 2012
 %find_lang %{name} %{name}gui alc cas wxcas ed2k %{name}.lang --with-man
 #find_lang commandline.lang --with-man
-%find_lang %{name}web --with-man
+#find_lang %{name}web --with-man
