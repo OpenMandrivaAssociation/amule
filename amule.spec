@@ -95,7 +95,8 @@ following platforms: Linux, *BSD and MacOS X.
 
 This is the command line tool to control aMule remotely (or locally:).
 
-%files commandline -f commandline.lang
+%files commandline 
+#-f commandline.lang
 %{_bindir}/%{name}cmd
 %{_bindir}/alcc
 %{_bindir}/amuled
@@ -169,5 +170,5 @@ desktop-file-install --vendor="" \
 
 # find_lang macro is different since 2012
 %find_lang %{name} %{name}gui alc cas wxcas ed2k %{name}.lang --with-man
-%find_lang commandline.lang --with-man
+#find_lang commandline.lang --with-man
 %find_lang %{name}web --with-man
