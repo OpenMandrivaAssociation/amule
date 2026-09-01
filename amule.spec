@@ -158,9 +158,6 @@ install -m 644 -D %{SOURCE10} %{buildroot}%{_miconsdir}/%{name}.png
 install -m 644 -D %{SOURCE11} %{buildroot}%{_iconsdir}/%{name}.png
 install -m 644 -D %{SOURCE12} %{buildroot}%{_liconsdir}/%{name}.png
 
-# Fix wrong-script-end-of-line-encoding
-perl -pi -e 's/\015$//' %{buildroot}%{_datadir}/doc/amule-%{version}/amule-win32.HOWTO.txt
-
 mv %{buildroot}%{_bindir}/ed2k %{buildroot}%{_bindir}/ed2k-%{name}
 rm -rf %{buildroot}%{_datadir}/doc/%{oname}-%{version}
 rm -f %{buildroot}%{_libdir}/xchat/plugins/xas.pl
@@ -172,5 +169,5 @@ desktop-file-install --vendor="" \
 
 # find_lang macro is different since 2012
 %find_lang %{name} %{name}gui alc cas wxcas ed2k %{name}.lang --with-man
-%find_lang alcc %{name}cmd commandline.lang --with-man
+%find_lang alcc commandline.lang --with-man
 %find_lang %{name}web --with-man
