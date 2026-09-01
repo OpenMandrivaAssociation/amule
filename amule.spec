@@ -169,5 +169,5 @@ desktop-file-install --vendor="" \
 
 # find_lang macro is different since 2012
 %find_lang %{name} %{name}gui alc cas wxcas ed2k %{name}.lang --with-man
-%find_lang alcc commandline.lang --with-man
+%find_lang commandline.lang --with-man
 %find_lang %{name}web --with-man
