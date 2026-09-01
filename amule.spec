@@ -43,7 +43,6 @@ following platforms: Linux, *BSD and MacOS X.
 
 %files -f %{name}.lang
 %doc docs/*
-%license %{_datadir}/LICENSE.md
 %{_datadir}/applications/org.amule.aMule.desktop
 %{_datadir}/applications/org.amule.aMule.gui.desktop
 %{_datadir}/applications/alc.desktop
@@ -72,7 +71,6 @@ following platforms: Linux, *BSD and MacOS X.
 %{_mandir}/man1/cas.1*
 %{_mandir}/man1/ed2k.1*
 %{_mandir}/man1/wxcas.1*
-%{_mandir}/*/man1/amuled.1.*
 
 %post
 update-alternatives --install %{_bindir}/ed2k ed2k %{_bindir}/ed2k-%{name} 5
