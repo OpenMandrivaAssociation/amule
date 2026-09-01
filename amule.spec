@@ -3,12 +3,12 @@
 
 Summary:	File sharing client compatible with eDonkey
 Name:		amule
-Version:	3.0.0
+Version:	3.0.1
 Release:	1
 License:	GPLv2+
 Group:		Networking/File transfer
-Url:		https://amule.org
-Source0:	https://github.com/amule-project/amule/archive/%{version}/%{name}-%{version}.tar.gz
+Url:		https://amule-org.github.io/
+Source0:	https://github.com/amule-org/amule/archive/%{version}/%{name}-%{version}.tar.gz
 # Use latest git, last release was done years ago and is broken and terrible to compile.
 # Git from 2023-11-16, commit: e26d06a6eeaf37c716a88a47890cb85b931a0538
 #Source0:	https://github.com/amule-project/amule/archive/refs/heads/amule-master.tar.gz
