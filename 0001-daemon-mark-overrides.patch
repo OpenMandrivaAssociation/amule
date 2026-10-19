@@ -1,8 +1,112 @@
-CamuleDaemonApp overrides wx and CamuleApp methods. Clang builds with
--Werror=inconsistent-missing-override, so mark them override.
+Clang -Werror=inconsistent-missing-override requires every overriding
+method to be marked once a class marks any (wxDECLARE_EVENT_TABLE does).
+Mark the ones the 3.1.0 headers left plain. aarch64 678685.
+diff -Nurp a/src/MuleNotebook.h b/src/MuleNotebook.h
+--- a/src/MuleNotebook.h	2026-09-21 12:05:20.000000000 +0200
++++ b/src/MuleNotebook.h	2026-10-19 07:26:57.047718295 +0200
+@@ -80,7 +80,7 @@ public:
+ 	/**
+ 	 * Deletes every page, triggering an event for each.
+ 	 */
+-	virtual bool DeleteAllPages();
++	virtual bool DeleteAllPages() override;
+ 
+ 	/**
+ 	 * Enables or disables the display of a popup menu.
+diff -Nurp a/src/MuleTrayIcon.h b/src/MuleTrayIcon.h
+--- a/src/MuleTrayIcon.h	2026-09-21 12:05:20.000000000 +0200
++++ b/src/MuleTrayIcon.h	2026-10-19 07:28:48.302795014 +0200
+@@ -125,7 +125,7 @@ private:
+ 	GtkWidget *m_menu;
+ 	int m_lastIconState;
+ #else
+-	virtual wxMenu *CreatePopupMenu();
++	virtual wxMenu *CreatePopupMenu() override;
+ 	void UpdateTray();
+ 
+ 	void SwitchShow(wxTaskBarIconEvent &);
+diff -Nurp a/src/amule-remote-gui.h b/src/amule-remote-gui.h
+--- a/src/amule-remote-gui.h	2026-09-21 12:05:20.000000000 +0200
++++ b/src/amule-remote-gui.h	2026-10-19 07:28:48.473021050 +0200
+@@ -942,11 +942,11 @@ class CamuleRemoteGuiApp : public wxApp,
+ 	// upgraded and restarted meanwhile, so the version on screen can go stale.
+ 	void UpdateCoreVersionIndicator();
+ 
+-	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
++	virtual int InitGui(bool geometry_enable, wxString &geometry_string) override;
+ 
+-	bool OnInit();
++	bool OnInit() override;
+ 
+-	int OnExit();
++	int OnExit() override;
+ 
+ 	// Catch alternate quit paths (macOS Dock right-click -> Quit) so the ShutDown + OnExit
+ 	// cleanup (list-control SaveSettings, wxConfig flush) runs even when wx skips OnExit.
+@@ -958,7 +958,7 @@ class CamuleRemoteGuiApp : public wxApp,
+ 	// Print a libbfd/addr2line-resolved backtrace on fatal signal. Mirrors
+ 	// CamuleApp::OnFatalException so amulegui crashes (#692) produce the same symbolicated
+ 	// trace amule(d) already emit.
+-	void OnFatalException();
++	void OnFatalException() override;
+ #endif
+ 
+ 	// Likewise for assertions, which until now amulegui alone dropped: the wxWidgets dialog
+@@ -967,10 +967,9 @@ class CamuleRemoteGuiApp : public wxApp,
+ 	// reason CamuleApp's copy is: distro wx packages keep wxDEBUG_LEVEL=1, so release builds
+ 	// assert too.
+ 	//
+-	// No `override` keyword, deliberately: nothing else in this class carries one, and
+-	// -Werror=inconsistent-missing-override then demands it on all eight of the others.
++	// wxDECLARE_EVENT_TABLE() marks some methods override, so this one must too.
+ 	void OnAssertFailure(
+-		const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg);
++		const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg) override;
+ 
+ #ifdef __WXMAC__
+ 	// Restore the main window when the user clicks the Dock icon while no window is visible.
+@@ -1023,7 +1022,7 @@ public:
+ 
+ 	bool CopyTextToClipboard(wxString strText);
+ 
+-	virtual int ShowAlert(wxString msg, wxString title, int flags);
++	virtual int ShowAlert(wxString msg, wxString title, int flags) override;
+ 
+ 	void ShutDown(wxCloseEvent &evt);
+ 
+diff -Nurp a/src/amule.h b/src/amule.h
 --- a/src/amule.h	2026-09-21 12:05:20.000000000 +0200
-+++ b/src/amule.h	2026-10-19 07:06:30.673443313 +0200
-@@ -740,20 +740,20 @@
++++ b/src/amule.h	2026-10-19 07:27:14.631923770 +0200
+@@ -683,13 +683,13 @@ protected:
+ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase
+ {
+ 
+-	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+-	// No `override`: this class declares none, and adding the first one
+-	// turns -Winconsistent-missing-override into errors on every sibling.
+-	virtual void RestoreSearchTabs() { CreateRestoredSearchTabs(); }
++	virtual int InitGui(bool geometry_enable, wxString &geometry_string) override;
++	// wxDECLARE_EVENT_TABLE() marks GetEventTable override, so every other
++	// override in this class needs the keyword or clang -Werror=inconsistent-missing-override fails.
++	virtual void RestoreSearchTabs() override { CreateRestoredSearchTabs(); }
+ 
+-	int OnExit();
+-	bool OnInit();
++	int OnExit() override;
++	bool OnInit() override;
+ 
+ 	// Catch alternate quit paths (macOS Dock right-click → Quit)
+ 	// so we can run ShutDown cleanup even when wxApp skips OnExit.
+@@ -714,7 +714,7 @@ class CamuleGuiApp : public CamuleApp, p
+ #endif
+ 
+ public:
+-	virtual int ShowAlert(wxString msg, wxString title, int flags);
++	virtual int ShowAlert(wxString msg, wxString title, int flags) override;
+ 
+ 	void ShutDown(wxCloseEvent &evt);
+ 
+@@ -740,20 +740,20 @@ extern CamuleGuiApp *theApp;
  class CamuleDaemonApp : public CamuleApp
  {
  private:
@@ -28,4 +132,56 @@ CamuleDaemonApp overrides wx and CamuleApp methods. Clang builds with
 +	virtual int ShowAlert(wxString msg, wxString title, int flags) override;
  
  	wxDECLARE_EVENT_TABLE();
+ };
+diff -Nurp a/src/webserver/src/WebInterface.h b/src/webserver/src/WebInterface.h
+--- a/src/webserver/src/WebInterface.h	2026-09-21 12:05:20.000000000 +0200
++++ b/src/webserver/src/WebInterface.h	2026-10-19 07:28:48.422644810 +0200
+@@ -41,17 +41,17 @@ class CamulewebApp : public CaMuleExtern
+ 	class CWebServerBase *m_webserver;
+ 
+ public:
+-	const wxString GetGreetingTitle();
+-	void Pre_Shell();
+-	void LoadConfigFile();
+-	void SaveConfigFile();
+-	void LoadAmuleConfig(CECFileConfig &cfg);
++	const wxString GetGreetingTitle() override;
++	void Pre_Shell() override;
++	void LoadConfigFile() override;
++	void SaveConfigFile() override;
++	void LoadAmuleConfig(CECFileConfig &cfg) override;
+ 	bool GetTemplateDir(const wxString &templateName, wxString &templateDir);
+ 	bool CheckDirForTemplate(wxString &dir, const wxString &tmpl);
+ 
+ 	// other command line switches
+-	void OnInitCmdLine(wxCmdLineParser &amuleweb_parser);
+-	bool OnCmdLineParsed(wxCmdLineParser &parser);
++	void OnInitCmdLine(wxCmdLineParser &amuleweb_parser) override;
++	bool OnCmdLineParsed(wxCmdLineParser &parser) override;
+ 
+ 	// class data
+ 	wxString m_TemplateName;
+@@ -69,18 +69,18 @@ public:
+ 	bool m_TemplateOk;
+ 
+ public:
+-	virtual void Post_Shell();
++	virtual void Post_Shell() override;
+ 
+-	void TextShell(const wxString &prompt);
++	void TextShell(const wxString &prompt) override;
+ 
+-	virtual wxString SetLocale(const wxString &language);
++	virtual wxString SetLocale(const wxString &language) override;
+ 
+ 	void OnNotifyEvent(CMuleGUIEvent &evt);
+ 	wxDECLARE_EVENT_TABLE();
+ 
+ private:
+-	virtual bool OnInit();
+-	virtual int OnRun();
++	virtual bool OnInit() override;
++	virtual int OnRun() override;
+ 
+ 	bool m_localTemplate;
  };
