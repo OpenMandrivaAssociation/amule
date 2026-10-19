@@ -1,0 +1,31 @@
+CamuleDaemonApp overrides wx and CamuleApp methods. Clang builds with
+-Werror=inconsistent-missing-override, so mark them override.
+--- a/src/amule.h	2026-09-21 12:05:20.000000000 +0200
++++ b/src/amule.h	2026-10-19 07:06:30.673443313 +0200
+@@ -740,20 +740,20 @@
+ class CamuleDaemonApp : public CamuleApp
+ {
+ private:
+-	bool OnInit();
+-	int OnRun();
+-	int OnExit();
++	bool OnInit() override;
++	int OnRun() override;
++	int OnExit() override;
+ 
+-	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
++	virtual int InitGui(bool geometry_enable, wxString &geometry_string) override;
+ 	// wxApp::Initialize() sets the file name conversion properly, but
+ 	// wxAppConsole::Initialize() leaves wxConvFileName as wxConvLibc, on which amuled aborts
+ 	// for the non-ASCII file names monolithic amule handles. This override sets it.
+-	virtual bool Initialize(int &argc_, wxChar **argv_);
++	virtual bool Initialize(int &argc_, wxChar **argv_) override;
+ 
+ public:
+ 	bool CopyTextToClipboard(wxString strText);
+ 
+-	virtual int ShowAlert(wxString msg, wxString title, int flags);
++	virtual int ShowAlert(wxString msg, wxString title, int flags) override;
+ 
+ 	wxDECLARE_EVENT_TABLE();
+ };

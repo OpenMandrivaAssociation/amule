@@ -15,6 +15,8 @@ Source0:	https://github.com/amule-org/amule/archive/%{version}/%{name}-%{version
 Source10:	%{name}-16.png
 Source11:	%{name}-32.png
 Source12:	%{name}-48.png
+# CamuleDaemonApp is missing override on methods the base marks override
+Patch0:		0001-daemon-mark-overrides.patch
 
 BuildRequires:	bison
 BuildRequires:	cmake
