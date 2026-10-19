@@ -66,6 +66,9 @@ following platforms: Linux, *BSD and MacOS X.
 %{_datadir}/pixmaps/org.amule.aMule.png
 %{_miconsdir}/%{name}.png
 %{_iconsdir}/hicolor/*x*/apps/org.amule.aMule.png
+%{_iconsdir}/hicolor/scalable/apps/org.amule.aMule.svg
+%{_iconsdir}/hicolor/*/mimetypes/application-x-emule-collection.*
+%{_datadir}/mime/packages/org.amule.aMule.xml
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 %{_mandir}/man1/alc.1*
